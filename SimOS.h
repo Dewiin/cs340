@@ -1,6 +1,9 @@
+#ifndef SIMOS_H_
+#define SIMOS_H_
 #include <iostream>
 #include <vector>
 #include <queue>
+using namespace std;
 
 struct FileReadRequest
 {
@@ -75,7 +78,7 @@ public:
   /*
   GetReadyQueue returns the vector with PIDs of processes in the ready-queue in any order.
   */
-  std::vector<int> GetReadyQueue()
+  std::vector<int> GetReadyQueue();
 
   /*
   GetMemory returns MemoryUsage vector describing locations of all processes in memory.
@@ -98,3 +101,5 @@ private:
 
 
 };
+
+#endif;
