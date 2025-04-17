@@ -1,6 +1,7 @@
 #ifndef SIMOS_H_
 #define SIMOS_H_
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 #include <queue>
 using namespace std;
@@ -16,6 +17,16 @@ struct MemoryItem
   unsigned long long itemAddress;
   unsigned long long itemSize;
   int PID; // PID of the process using this chunk of memory
+};
+
+struct Process {
+  int PID;
+  int priority;
+  unsigned long long size;
+  int parentPID;
+  std::vector<int> children;
+  bool isWaiting = false;
+  bool isZombie = false;
 };
 
 using MemoryUse = std::vector<MemoryItem>;
@@ -98,8 +109,21 @@ public:
   std::queue<FileReadRequest> GetDiskQueue(int diskNumber);
 
 private:
+  unsigned long long totalRAM;
+  unsigned long long usedRAM;
+  int nextPID;
 
+  // Process management
+  std::unordered_map<int, Process> processTable; // PID -> Process
+  std::queue<int> readyQueue;
+  int cpuPID;
 
+  // Memory tracking
+  MemoryUse memoryUsage;
+
+  // Disk I/O
+  std::vector<FileReadRequest> disks;
+  std::vector<std::queue<FileReadRequest>> diskQueues;
 };
 
-#endif;
+#endif
